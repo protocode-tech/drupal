@@ -1,0 +1,30 @@
+version: '3'
+services:
+    # Php, composer, nginx container
+    app:
+        image: rg.fr-par.scw.cloud/protocode-tech/php-8.2
+        environment:
+            VIRTUAL_HOST: 'app.local'
+            NGINX_INDEX_FILE: index.php
+            NGINX_ROOT_DIR: web
+        labels:
+            # Set aliases to use binaries within container from environment terminal
+            protocode.alias.php: "docker-compose exec -u $(id -u):$(id -g) app php"
+            protocode.alias.composer: "docker-compose run --rm -u $(id -u):$(id -g) -it --entrypoint= --no-deps app composer"
+        links:
+            - database
+        volumes:
+            - '.:/var/www'
+    # Mysql container
+    database:
+        image: 'mysql:8'
+        command: --default-authentication-plugin=mysql_native_password
+        environment:
+            MYSQL_DATABASE: ${DB_NAME}
+            MYSQL_USER: ${DB_USER}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_PORT: ${DB_PORT}
+        volumes:
+            - ../.docker-volumes/database:/var/lib/mysql:delegated
+        restart: unless-stopped
