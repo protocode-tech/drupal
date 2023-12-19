@@ -2,7 +2,7 @@ version: '3'
 services:
     # Php, composer, nginx container
     app:
-        image: rg.fr-par.scw.cloud/protocode-tech/php-8.2
+        image: rg.fr-par.scw.cloud/protocode/php-8.2
         environment:
             VIRTUAL_HOST: 'app.local'
             NGINX_INDEX_FILE: index.php
