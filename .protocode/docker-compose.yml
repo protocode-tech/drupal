@@ -18,7 +18,7 @@ services:
     # Mysql container
     database:
         image: 'mysql:8'
-        command: --default-authentication-plugin=mysql_native_password
+        command: '--mysql-native-password=ON'
         environment:
             MYSQL_DATABASE: ${DB_NAME}
             MYSQL_USER: ${DB_USER}
